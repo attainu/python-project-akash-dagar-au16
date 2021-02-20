@@ -24,10 +24,30 @@ def main():
     gs = ChessEngine.GameState()
     loadImages()
     running = True
+    sqSelcted = () #it will keep track of the last click of the user (tuple: (row, col))
+    playerClicks = [] #keep track of player clicks
     while running:
         for e in p.event.get():
             if e.type == p.QUIT:
                 running = False
+            elif e.type == p.MOUSEBUTTONDOWN:
+                location = p.mouse.get_pos()
+                col = location[0] // SQ_SIZE
+                row = location[1] // SQ_SIZE
+                if sqSelcted == (row, col):
+                    sqSelcted == ()
+                    playerClicks == ()
+                else:
+                    sqSelcted = (row, col)
+                    playerClicks.append(sqSelcted)
+                if len(playerClicks) == 2:
+                    move = ChessEngine.Move(playerClicks[0], playerClicks[1], gs.board)
+                    #print(move.getChessNotation())
+                    gs.makeMove(move)
+                    sqSelcted = ()
+                    playerClicks = []
+
+
         drawGameState(screen, gs)
         clock.tick(MAX_FPS)
         p.display.flip()
